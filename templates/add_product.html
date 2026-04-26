@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Add Product - Jewelry Pricing Tool{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <p class="eyebrow">New item</p>
+    <h1>Add Product</h1>
+  </div>
+</section>
+
+{% set action = url_for('add_product') %}
+{% set button_text = "Save Product" %}
+{% include "_product_form.html" %}
+{% endblock %}

@@ -1,0 +1,11 @@
+{
+  "gold_rate": 156.2,
+  "diamond_base_rate": 55000.0,
+  "default_margin": 0.0,
+  "currency_symbol": "$",
+  "platinum_rate": 3400.0,
+  "labor_rate": 20.0,
+  "setting_charge_per_pc": 0.54,
+  "default_gold_loss": 10.0,
+  "default_rhodium": 20.0
+}

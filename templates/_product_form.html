@@ -1,0 +1,100 @@
+<form class="product-grid" method="post" action="{{ action }}" data-price-form>
+  <section class="panel form-panel">
+    <label>
+      Client Name
+      <input name="client_name" type="text" maxlength="120" value="{{ product.client_name|default('', true) }}" placeholder="Customer or company name">
+    </label>
+
+    <div class="field-row">
+      <label>
+        Category
+        <select name="category" required>
+          {% for category in categories %}
+            <option value="{{ category }}" {% if product.category == category %}selected{% endif %}>{{ category }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        Metal Type
+        <select name="metal_type" required>
+          {% for metal in metal_types %}
+            <option value="{{ metal }}" {% if product.metal_type == metal %}selected{% endif %}>{{ metal }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </div>
+
+    <div class="field-row">
+      <label>
+        Metal Weight (grams)
+        <input name="metal_weight" type="number" step="0.01" min="0" value="{{ product.metal_weight|default('', true) }}" required>
+      </label>
+      <label>
+        Diamond Weight (carat)
+        <input name="diamond_weight" type="number" step="0.01" min="0" value="{{ product.diamond_weight|default('', true) }}" required>
+      </label>
+    </div>
+
+    <div class="field-row">
+      <label>
+        Diamond Pcs
+        <input name="diamond_pcs" type="number" step="1" min="0" value="{{ product.diamond_pcs|default(0, true) }}" required>
+      </label>
+      <label>
+        Diamond Rate
+        <input name="diamond_rate" type="number" step="0.01" min="0" value="{{ product.diamond_rate }}" required>
+      </label>
+    </div>
+
+    <div class="field-row">
+      <label>
+        Labor Rate (per gram)
+        <input name="labor_rate" type="number" step="0.01" min="0" value="{{ product.labor_rate }}" required>
+      </label>
+      <label>
+        Setting Charge (per pc)
+        <input name="setting_charge_per_pc" type="number" step="0.01" min="0" value="{{ product.setting_charge_per_pc }}" required>
+      </label>
+    </div>
+
+    <div class="field-row">
+      <label>
+        Gold Loss (% of metal)
+        <input name="gold_loss" type="number" step="0.01" min="0" value="{{ product.gold_loss }}" required>
+      </label>
+      <label>
+        Rhodium
+        <input name="rhodium" type="number" step="0.01" min="0" value="{{ product.rhodium }}" required>
+      </label>
+    </div>
+
+    <label>
+      Shipping / Other Charges
+      <input name="extra_charges" type="number" step="0.01" min="0" value="{{ product.extra_charges|default(0, true) }}" required>
+    </label>
+
+    <label>
+      Margin (%)
+      <input name="margin" type="number" step="0.01" min="0" value="{{ product.margin }}" required>
+    </label>
+
+    <div class="form-actions">
+      <button class="button primary" type="submit">{{ button_text }}</button>
+      <a class="button ghost" href="{{ url_for('dashboard') }}">Cancel</a>
+    </div>
+  </section>
+
+  <aside class="panel price-preview">
+    <p class="eyebrow">Live estimate</p>
+    <div class="price-line"><span>Metal</span><strong data-metal-price>{{ config.currency_symbol }}0.00</strong></div>
+    <div class="price-line"><span>Diamond</span><strong data-diamond-price>{{ config.currency_symbol }}0.00</strong></div>
+    <div class="price-line"><span>Labor</span><strong data-labor-charge>{{ config.currency_symbol }}0.00</strong></div>
+    <div class="price-line"><span>Setting</span><strong data-setting-charge>{{ config.currency_symbol }}0.00</strong></div>
+    <div class="price-line"><span>Making VAT 5%</span><strong data-making-vat>{{ config.currency_symbol }}0.00</strong></div>
+    <div class="price-line"><span>Gold loss</span><strong data-gold-loss>{{ config.currency_symbol }}0.00</strong></div>
+    <div class="price-line"><span>Rhodium</span><strong data-rhodium>{{ config.currency_symbol }}0.00</strong></div>
+    <div class="price-line"><span>Extra</span><strong data-extra-charges>{{ config.currency_symbol }}0.00</strong></div>
+    <div class="price-line"><span>Total cost</span><strong data-total-cost>{{ config.currency_symbol }}0.00</strong></div>
+    <div class="price-total"><span>Final price</span><strong data-final-price>{{ config.currency_symbol }}0.00</strong></div>
+  </aside>
+</form>

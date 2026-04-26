@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Jewelry Pricing Tool{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Inventory</p>
+    <h1>Dashboard</h1>
+  </div>
+  <div class="header-actions">
+    <a class="button secondary" href="{{ url_for('export') }}">Export Excel</a>
+    <a class="button primary" href="{{ url_for('add_product') }}">Add Product</a>
+  </div>
+</section>
+
+<section class="metrics">
+  <div>
+    <span>Total Products</span>
+    <strong>{{ totals.count }}</strong>
+  </div>
+  <div>
+    <span>Inventory Value</span>
+    <strong>{{ config.currency_symbol }}{{ "%.2f"|format(totals.inventory_value) }}</strong>
+  </div>
+</section>
+
+<form class="toolbar" method="get">
+  <input type="search" name="search" value="{{ search }}" placeholder="Search product ID or client">
+  <select name="category">
+    <option value="">All categories</option>
+    {% for category in categories %}
+      <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>{{ category }}</option>
+    {% endfor %}
+  </select>
+  <select name="sort">
+    <option value="newest" {% if sort == "newest" %}selected{% endif %}>Newest first</option>
+    <option value="oldest" {% if sort == "oldest" %}selected{% endif %}>Oldest first</option>
+    <option value="price_desc" {% if sort == "price_desc" %}selected{% endif %}>Price high to low</option>
+    <option value="price_asc" {% if sort == "price_asc" %}selected{% endif %}>Price low to high</option>
+  </select>
+  <button class="button primary" type="submit">Apply</button>
+  <a class="button ghost" href="{{ url_for('dashboard') }}">Reset</a>
+</form>
+
+<section class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Client</th>
+        <th>Category</th>
+        <th>Metal</th>
+        <th>Metal Weight</th>
+        <th>Diamond Weight</th>
+        <th>Diamond Pcs</th>
+        <th>Final Price</th>
+        <th>Created</th>
+        <th class="actions-col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+        <tr>
+          <td><strong>{{ product.product_code }}</strong></td>
+          <td>{{ product.client_name or "-" }}</td>
+          <td>{{ product.category }}</td>
+          <td>{{ product.metal_type }}</td>
+          <td>{{ product.metal_weight }} g</td>
+          <td>{{ product.diamond_weight }} ct</td>
+          <td>{{ product.diamond_pcs }}</td>
+          <td>{{ config.currency_symbol }}{{ "%.2f"|format(product.final_price) }}</td>
+          <td>{{ product.created_at }}</td>
+          <td class="actions">
+            <a class="icon-button" href="{{ url_for('edit_product', product_id=product.id) }}">Edit</a>
+            <form method="post" action="{{ url_for('duplicate_product', product_id=product.id) }}">
+              <button class="icon-button" type="submit">Duplicate</button>
+            </form>
+            <form method="post" action="{{ url_for('delete_product', product_id=product.id) }}" data-confirm="Delete {{ product.product_code }}?">
+              <button class="icon-button danger" type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="10" class="empty">No products found. Add your first design to begin.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

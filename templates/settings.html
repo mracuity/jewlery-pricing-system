@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Settings - Jewelry Pricing Tool{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Pricing rates</p>
+    <h1>Settings</h1>
+  </div>
+</section>
+
+<form class="panel settings-form" method="post">
+  <div class="field-row">
+    <label>
+      Gold Rate (per gram)
+      <input name="gold_rate" type="number" step="0.01" min="0" value="{{ settings.gold_rate }}" required>
+    </label>
+    <label>
+      Platinum Rate (per gram)
+      <input name="platinum_rate" type="number" step="0.01" min="0" value="{{ settings.platinum_rate }}" required>
+    </label>
+  </div>
+  <div class="field-row">
+    <label>
+      Diamond Base Rate
+      <input name="diamond_base_rate" type="number" step="0.01" min="0" value="{{ settings.diamond_base_rate }}" required>
+    </label>
+    <label>
+      Default Margin (%)
+      <input name="default_margin" type="number" step="0.01" min="0" value="{{ settings.default_margin }}" required>
+    </label>
+  </div>
+  <div class="field-row">
+    <label>
+      Labor Rate (per gram)
+      <input name="labor_rate" type="number" step="0.01" min="0" value="{{ settings.labor_rate }}" required>
+    </label>
+    <label>
+      Setting Charge (per diamond pc)
+      <input name="setting_charge_per_pc" type="number" step="0.01" min="0" value="{{ settings.setting_charge_per_pc }}" required>
+    </label>
+  </div>
+  <div class="field-row">
+    <label>
+      Default Gold Loss (% of metal)
+      <input name="default_gold_loss" type="number" step="0.01" min="0" value="{{ settings.default_gold_loss }}" required>
+    </label>
+    <label>
+      Default Rhodium
+      <input name="default_rhodium" type="number" step="0.01" min="0" value="{{ settings.default_rhodium }}" required>
+    </label>
+  </div>
+  <label>
+    Currency Symbol
+    <input name="currency_symbol" type="text" maxlength="4" value="{{ settings.currency_symbol }}" required>
+  </label>
+  <div class="form-actions">
+    <button class="button primary" type="submit">Save Settings</button>
+  </div>
+</form>
+{% endblock %}
