@@ -1,9 +1,5 @@
-import json
-from pathlib import Path
+from models.db_setup import load_settings, save_settings
 
-
-BASE_DIR = Path(__file__).resolve().parent.parent
-CONFIG_PATH = BASE_DIR / "config.json"
 
 PURITY_FACTORS = {
     "Gold 14k": 0.585,
@@ -13,13 +9,11 @@ PURITY_FACTORS = {
 
 
 def load_config():
-    with open(CONFIG_PATH, "r", encoding="utf-8") as config_file:
-        return json.load(config_file)
+    return load_settings()
 
 
 def save_config(config):
-    with open(CONFIG_PATH, "w", encoding="utf-8") as config_file:
-        json.dump(config, config_file, indent=2, ensure_ascii=False)
+    save_settings(config)
 
 
 def get_metal_rate(metal_type, config):

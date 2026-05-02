@@ -1,146 +1,105 @@
 # Jewelry Pricing Tool
 
-A lightweight web-based jewelry pricing system built with Python (Flask) for internal team use.
-This tool helps calculate product prices using configurable formulas, manage SKUs, and export pricing data to Excel.
-
----
+A lightweight Flask-based jewelry pricing system for internal team use.
 
 ## Features
 
 * Add, edit, delete, and duplicate jewelry products
-* Formula-based pricing engine (metal + diamond + making + margin)
-* Auto-generated SKU IDs (RNG, NEC, BRC formats)
-* Configurable rates (gold, diamond, margin)
+* Formula-based pricing engine
+* Auto-generated product codes
+* Shared rates and settings
 * Dashboard with search, filter, and sorting
-* Excel export with full cost breakdown
-* Local database (SQLite)
-
----
+* Excel export
+* PostgreSQL support for team use, with SQLite fallback for local testing
 
 ## Tech Stack
 
-* Backend: Python (Flask)
-* Database: SQLite
+* Backend: Python and Flask
+* Database: PostgreSQL on Render
+* Local fallback: SQLite
 * Frontend: HTML, CSS, JavaScript
-* Excel Export: pandas + openpyxl
+* Excel Export: pandas and openpyxl
 
----
+## Render Setup
 
-## Project Structure
+Set these environment variables in your Render web service:
 
-```
-jewelry_pricing_tool/
-│
-├── app.py
-├── database.db
-├── config.json
-├── requirements.txt
-│
-├── templates/
-├── static/
-├── utils/
-├── models/
+```text
+DATABASE_URL=your Render PostgreSQL internal database URL
+SECRET_KEY=any long random secret text
 ```
 
----
+Use this Render start command:
 
-## Pricing Logic
-
-Metal Price = Weight × Gold Rate × Purity Factor
-Diamond Price = Carat × Rate
-Total Cost = Metal + Diamond + Making
-Final Price = Total Cost × (1 + Margin%)
-
-Purity factors:
-
-* 14k = 0.585
-* 18k = 0.75
-
-All rates are configurable via config.json.
-
----
-
-## Getting Started
-
-1. Clone the repository
-
-```
-git clone https://github.com/mracuity/jewelry-pricing-tool.git
-cd jewelry-pricing-tool
+```bash
+gunicorn app:app
 ```
 
-2. Install dependencies
+The app creates these PostgreSQL tables automatically on startup:
 
-```
+* `products`
+* `app_settings`
+
+Keep the real database password only in Render environment variables. Do not commit it into GitHub.
+
+## Local Setup
+
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
-3. Run the application
+Run locally:
 
-```
+```bash
 python app.py
 ```
 
-4. Open in browser
+Open:
 
-http://localhost:5000
+```text
+http://localhost:8080
+```
 
----
+Without `DATABASE_URL`, the app uses local `database.db` and `config.json`.
+
+## Migrate Existing Local Data
+
+To copy products from local `database.db` into PostgreSQL:
+
+PowerShell:
+
+```powershell
+$env:DATABASE_URL="your Render PostgreSQL URL"
+python scripts/migrate_sqlite_to_postgres.py
+```
+
+Command Prompt:
+
+```bat
+set DATABASE_URL=your Render PostgreSQL URL
+python scripts\migrate_sqlite_to_postgres.py
+```
+
+The migration skips duplicate `product_code` values.
 
 ## Configuration
 
-Edit config.json to update:
+Use the Settings page to update shared PostgreSQL settings:
 
-* Gold rate (per gram)
-* Diamond rate (per carat)
+* Gold rate
+* Diamond rate
 * Default margin
 * Currency symbol
+* Platinum rate
+* Labor rate
+* Setting charge
+* Gold loss
+* Rhodium
 
----
+When PostgreSQL is enabled, these settings are saved in the shared `app_settings` table.
 
-## Excel Export
+## Important Note
 
-Export all products including:
-
-* Product details
-* Metal cost
-* Diamond cost
-* Making charges
-* Final price
-
----
-
-## Limitations
-
-* SQLite is not ideal for multiple concurrent users
-* No authentication system (intended for internal use)
-* Not optimized for large-scale deployment
-
----
-
-## Future Improvements
-
-* PostgreSQL database support
-* User authentication and roles
-* Multi-currency pricing
-* Batch upload via Excel
-* API integration
-
----
-
-## Use Case
-
-* Jewelry manufacturers
-* Internal pricing teams
-* E-commerce catalog preparation
-
----
-
-## License
-
-Copyright (c) 2026 [Mr Acuity](https://dev.mracuity.com).
-
-All rights reserved.
-
-This software is provided for viewing purposes only.
-No permission is granted to use, copy, modify, merge, publish, distribute, sublicense, or sell copies of the software without explicit written permission from the author.
+This version does not include login accounts yet. Before sharing the Render URL widely, add authentication or restrict access to trusted team members.

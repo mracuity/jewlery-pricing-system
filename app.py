@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from flask import Flask, flash, redirect, render_template, request, send_file, url_for
@@ -12,7 +13,8 @@ CATEGORIES = ["Ring", "Necklace", "Bracelet"]
 METAL_TYPES = ["Gold 14k", "Gold 18k", "Platinum"]
 
 app = Flask(__name__)
-app.secret_key = "local-jewelry-pricing-tool"
+app.secret_key = os.environ.get("SECRET_KEY", "local-jewelry-pricing-tool")
+init_db()
 
 
 @app.context_processor
@@ -90,8 +92,8 @@ def fetch_products(search="", category="", sort="newest"):
     sort_map = {
         "price_asc": "final_price ASC",
         "price_desc": "final_price DESC",
-        "oldest": "datetime(created_at) ASC",
-        "newest": "datetime(created_at) DESC",
+        "oldest": "created_at ASC",
+        "newest": "created_at DESC",
     }
     query += f" ORDER BY {sort_map.get(sort, sort_map['newest'])}"
 
@@ -321,9 +323,5 @@ def export():
         mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
 
-
-import os
-
 if __name__ == "__main__":
-    init_db()
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
