@@ -93,6 +93,7 @@ Use the Settings page to update shared PostgreSQL settings:
 * Default margin
 * Currency symbol
 * Platinum rate
+* Silver rate
 * Labor rate
 * Setting charge
 * Gold loss

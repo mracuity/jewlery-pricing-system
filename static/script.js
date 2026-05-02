@@ -1,7 +1,8 @@
 const purityFactors = {
   "Gold 14k": 0.585,
   "Gold 18k": 0.75,
-  "Platinum": 1
+  "Platinum": 1,
+  "Silver": 1
 };
 
 function money(value) {
@@ -12,6 +13,9 @@ function money(value) {
 function getMetalRate(metalType) {
   if (metalType === "Platinum") {
     return Number(window.APP_CONFIG?.platinum_rate || window.APP_CONFIG?.gold_rate || 0);
+  }
+  if (metalType === "Silver") {
+    return Number(window.APP_CONFIG?.silver_rate || 0);
   }
   return Number(window.APP_CONFIG?.gold_rate || 0);
 }

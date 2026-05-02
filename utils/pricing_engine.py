@@ -5,6 +5,7 @@ PURITY_FACTORS = {
     "Gold 14k": 0.585,
     "Gold 18k": 0.75,
     "Platinum": 1.0,
+    "Silver": 1.0,
 }
 
 
@@ -19,6 +20,8 @@ def save_config(config):
 def get_metal_rate(metal_type, config):
     if metal_type == "Platinum":
         return float(config.get("platinum_rate", config.get("gold_rate", 0)))
+    if metal_type == "Silver":
+        return float(config.get("silver_rate", 0))
     return float(config.get("gold_rate", 0))
 
 

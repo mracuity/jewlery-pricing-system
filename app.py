@@ -10,7 +10,7 @@ from utils.pricing_engine import calculate_price, load_config, save_config
 
 BASE_DIR = Path(__file__).resolve().parent
 CATEGORIES = ["Ring", "Necklace", "Bracelet"]
-METAL_TYPES = ["Gold 14k", "Gold 18k", "Platinum"]
+METAL_TYPES = ["Gold 14k", "Gold 18k", "Platinum", "Silver"]
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "local-jewelry-pricing-tool")
@@ -285,6 +285,7 @@ def settings():
                 "default_margin": float(request.form.get("default_margin", 0)),
                 "currency_symbol": request.form.get("currency_symbol", "").strip() or "$",
                 "platinum_rate": float(request.form.get("platinum_rate", 0)),
+                "silver_rate": float(request.form.get("silver_rate", 0)),
                 "labor_rate": float(request.form.get("labor_rate", 0)),
                 "setting_charge_per_pc": float(request.form.get("setting_charge_per_pc", 0)),
                 "default_gold_loss": float(request.form.get("default_gold_loss", 0)),
@@ -295,6 +296,7 @@ def settings():
                 updated_config["diamond_base_rate"],
                 updated_config["default_margin"],
                 updated_config["platinum_rate"],
+                updated_config["silver_rate"],
                 updated_config["labor_rate"],
                 updated_config["setting_charge_per_pc"],
                 updated_config["default_gold_loss"],
